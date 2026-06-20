@@ -193,6 +193,7 @@ Results are based on simplified assumptions and should not be considered financi
 ## Future Improvements
 
 - [ ] PDF export of the full report
+- [ ] Weekly email summary (opt-in, client-side via mailto)
 - [ ] Challenge streaks and history
 - [ ] City-specific transport cost adjustments
 - [ ] Household vs individual mode
