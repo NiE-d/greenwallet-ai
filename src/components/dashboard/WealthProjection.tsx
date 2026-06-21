@@ -10,8 +10,9 @@ import {
 } from 'recharts'
 import type { WealthMilestone } from '@/types/results'
 import { formatINR } from '@/utils/formatters'
+import { RECOVERABLE_SAVINGS_RATE } from '@/data/financialFactors'
 
-interface Props {
+interface WealthProjectionProps {
   milestones: WealthMilestone[]
   annualSavings: number
 }
@@ -26,7 +27,7 @@ function CustomTooltip({ active, payload, label }: { active?: boolean; payload?:
   )
 }
 
-export function WealthProjection({ milestones, annualSavings }: Props) {
+export function WealthProjection({ milestones, annualSavings }: WealthProjectionProps) {
   const data = milestones.map((m) => ({
     name: `${m.years}yr`,
     corpus: m.corpus,
@@ -39,7 +40,7 @@ export function WealthProjection({ milestones, annualSavings }: Props) {
           Investment projection at 12% p.a.
         </p>
         <p className="text-xs text-gray-400 mt-0.5">
-          Redirecting {formatINR(annualSavings * 0.6)} per year (60% of recoverable waste)
+          Redirecting {formatINR(annualSavings * RECOVERABLE_SAVINGS_RATE)} per year ({RECOVERABLE_SAVINGS_RATE * 100}% of recoverable waste)
         </p>
       </div>
       <ResponsiveContainer width="100%" height={200}>

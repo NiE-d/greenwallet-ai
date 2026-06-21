@@ -44,6 +44,31 @@ describe('generateChallenges()', () => {
     expect(generateChallenges(lowAC).some((c) => c.id === 'ch_ac')).toBe(false)
   })
 
+  it('includes the impulse-buying challenge only when purchases exceed 3 per month', () => {
+    const highPurchases: LifestyleForm = { ...DEFAULT_FORM, purchases: 8 }
+    const atBoundary: LifestyleForm = { ...DEFAULT_FORM, purchases: 3 }
+
+    expect(generateChallenges(highPurchases).some((c) => c.id === 'ch_buy')).toBe(true)
+    expect(generateChallenges(atBoundary).some((c) => c.id === 'ch_buy')).toBe(false)
+  })
+
+  it('always includes the meal-planning, lights, and reuse challenges regardless of input', () => {
+    const minimalForm: LifestyleForm = {
+      ...DEFAULT_FORM,
+      transport: 'Metro',
+      commute: 0,
+      deliveries: 0,
+      acHours: 0,
+      purchases: 0,
+    }
+    const result = generateChallenges(minimalForm)
+    const ids = result.map((c) => c.id)
+
+    expect(ids).toContain('ch_meal')
+    expect(ids).toContain('ch_lights')
+    expect(ids).toContain('ch_reuse')
+  })
+
   it('every returned challenge has a non-empty id, title, and reward', () => {
     const result = generateChallenges(SAMPLE_FORM)
     for (const challenge of result) {

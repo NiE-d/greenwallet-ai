@@ -1,15 +1,16 @@
 import { motion } from 'framer-motion'
 import { formatINR } from '@/utils/formatters'
+import { RECOVERABLE_SAVINGS_RATE } from '@/data/financialFactors'
 
-interface Props {
+interface FamilyLetterProps {
   annualWaste: number
   years10Corpus: number
   years20Corpus: number
   familySize: number
 }
 
-export function FamilyLetter({ annualWaste, years10Corpus, years20Corpus, familySize }: Props) {
-  const recoverable = Math.round(annualWaste * 0.6)
+export function FamilyLetter({ annualWaste, years10Corpus, years20Corpus, familySize }: FamilyLetterProps) {
+  const recoverable = Math.round(annualWaste * RECOVERABLE_SAVINGS_RATE)
 
   return (
     <motion.div

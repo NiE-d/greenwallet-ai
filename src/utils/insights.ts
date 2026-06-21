@@ -2,6 +2,7 @@ import type { LifestyleForm } from '@/types/form'
 import type { Insight } from '@/types/results'
 import { getEquivalents } from '@/data/equivalents'
 import { formatINR } from '@/utils/formatters'
+import { RECOVERABLE_SAVINGS_RATE } from '@/data/financialFactors'
 
 interface CategoryAmounts {
   transportMonthly: number
@@ -11,6 +12,17 @@ interface CategoryAmounts {
   shoppingMonthly: number
 }
 
+/**
+ * Generates personalized, human-readable spending insights by comparing the
+ * user's lifestyle inputs against fixed thresholds (e.g. delivery frequency,
+ * electricity usage). Each insight that applies includes a monthly/annual
+ * loss estimate, real-world spending equivalents, a practical saving tip,
+ * and an approximate CO2 impact.
+ *
+ * @param form - The user's lifestyle profile, used to decide which insights apply.
+ * @param amounts - Pre-computed monthly waste amounts per category, supplied by {@link compute}.
+ * @returns Zero or more {@link Insight} objects, one per applicable category.
+ */
 export function generateInsights(
   form: LifestyleForm,
   amounts: CategoryAmounts,
@@ -36,7 +48,7 @@ export function generateInsights(
     insights.push({
       id: 'transport',
       title: `Bike commuting over long distances adds fuel and maintenance costs`,
-      description: `For distances above 5 km, a combination of metro + walking can save ${formatINR(amounts.transportMonthly * 0.6)} monthly while reducing fatigue.`,
+      description: `For distances above 5 km, a combination of metro + walking can save ${formatINR(amounts.transportMonthly * RECOVERABLE_SAVINGS_RATE)} monthly while reducing fatigue.`,
       monthlyLoss: amounts.transportMonthly,
       annualLoss: annual,
       equivalents: getEquivalents(amounts.transportMonthly, 5),
@@ -52,7 +64,7 @@ export function generateInsights(
     insights.push({
       id: 'delivery',
       title: `${form.deliveries} food delivery orders per week carry hidden platform premiums`,
-      description: `Platform fees, surge pricing, and delivery charges add 30–40% to the food cost. Cooking 3 of those meals at home could save ${formatINR(amounts.deliveryMonthly * 0.6)} per month — that's ${formatINR(annual * 0.6)} per year.`,
+      description: `Platform fees, surge pricing, and delivery charges add 30–40% to the food cost. Cooking 3 of those meals at home could save ${formatINR(amounts.deliveryMonthly * RECOVERABLE_SAVINGS_RATE)} per month — that's ${formatINR(annual * RECOVERABLE_SAVINGS_RATE)} per year.`,
       monthlyLoss: amounts.deliveryMonthly,
       annualLoss: annual,
       equivalents: getEquivalents(amounts.deliveryMonthly, 5),

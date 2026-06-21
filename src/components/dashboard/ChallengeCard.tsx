@@ -1,13 +1,13 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Challenge } from '@/types/challenge'
 
-interface Props {
+interface ChallengeCardProps {
   challenge: Challenge
   completed: boolean
   onToggle: () => void
 }
 
-export function ChallengeCard({ challenge, completed, onToggle }: Props) {
+export function ChallengeCard({ challenge, completed, onToggle }: ChallengeCardProps) {
   return (
     <motion.div
       layout

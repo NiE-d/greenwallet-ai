@@ -1,7 +1,17 @@
 import type { FamilyGoal } from '@/types/results'
+import { RECOVERABLE_SAVINGS_RATE } from '@/data/financialFactors'
 
+/**
+ * Translates a household's annual waste figure into a set of concrete
+ * family opportunity goals (education, medical, vacation, investment, etc.),
+ * each expressed as a rupee amount the family could realistically work toward.
+ *
+ * @param annualWaste - Total estimated avoidable annual spending.
+ * @param familySize - Number of people in the household, used for note copy.
+ * @returns Six {@link FamilyGoal} entries with computed rupee values.
+ */
 export function buildFamilyGoals(annualWaste: number, familySize: number): FamilyGoal[] {
-  const saved = annualWaste * 0.6
+  const saved = annualWaste * RECOVERABLE_SAVINGS_RATE
   return [
     {
       emoji: '🎓',

@@ -1,7 +1,18 @@
 import type { LifestyleForm } from '@/types/form'
 import type { Challenge } from '@/types/challenge'
 import { formatINR } from '@/utils/formatters'
+import { RECOVERABLE_SAVINGS_RATE } from '@/data/financialFactors'
 
+/**
+ * Generates a personalized list of weekly "frugal challenges" based on the
+ * user's lifestyle profile. Each challenge targets a specific behavior
+ * (transport, food, electricity, or shopping) only when that behavior is
+ * relevant to the user's inputs, plus two general-purpose challenges that
+ * always appear.
+ *
+ * @param form - The user's lifestyle profile.
+ * @returns Up to 6 {@link Challenge} objects, ordered by relevance.
+ */
 export function generateChallenges(form: LifestyleForm): Challenge[] {
   const challenges: Challenge[] = []
 
@@ -25,7 +36,7 @@ export function generateChallenges(form: LifestyleForm): Challenge[] {
   }
 
   if (form.deliveries > 2) {
-    const saving = Math.round(form.deliveries * 90 * 0.6)
+    const saving = Math.round(form.deliveries * 90 * RECOVERABLE_SAVINGS_RATE)
     challenges.push({
       id: 'ch_cook',
       emoji: '🍳',

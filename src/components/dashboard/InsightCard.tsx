@@ -3,12 +3,12 @@ import { Badge } from '@/components/ui/Badge'
 import type { Insight } from '@/types/results'
 import { formatINR } from '@/utils/formatters'
 
-interface Props {
+interface InsightCardProps {
   insight: Insight
   index: number
 }
 
-export function InsightCard({ insight, index }: Props) {
+export function InsightCard({ insight, index }: InsightCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 16 }}

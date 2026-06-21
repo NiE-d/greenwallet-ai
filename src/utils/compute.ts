@@ -1,6 +1,7 @@
 import type { LifestyleForm } from '@/types/form'
 import type { BreakdownItem, ComputedResults, WealthMilestone } from '@/types/results'
 import { CO2_FACTORS } from '@/data/co2Factors'
+import { RECOVERABLE_SAVINGS_RATE } from '@/data/financialFactors'
 import { buildFamilyGoals } from '@/data/familyGoals'
 import { generateInsights } from '@/utils/insights'
 
@@ -84,7 +85,7 @@ function buildBreakdown(
 }
 
 function buildWealthMilestones(annualSavings: number): WealthMilestone[] {
-  const investable = annualSavings * 0.6
+  const investable = annualSavings * RECOVERABLE_SAVINGS_RATE
   const rate = 0.12
   return [1, 3, 5, 10, 15, 20].map((years) => ({
     years,
@@ -92,6 +93,18 @@ function buildWealthMilestones(annualSavings: number): WealthMilestone[] {
   }))
 }
 
+/**
+ * Computes the full financial, environmental, and behavioral report for a
+ * given lifestyle profile.
+ *
+ * This is a pure function: identical input always produces identical output,
+ * with no side effects (no I/O, no randomness, no mutation of the input).
+ *
+ * @param form - Validated lifestyle profile collected from the questionnaire.
+ * @returns A complete {@link ComputedResults} object consumed by the dashboard,
+ *          including monthly/annual waste, category breakdown, personalized
+ *          insights, family goals, wealth projections, and CO2 impact.
+ */
 export function compute(form: LifestyleForm): ComputedResults {
   const transport = computeTransport(form)
   const electricity = computeElectricity(form)
@@ -148,6 +161,6 @@ export function compute(form: LifestyleForm): ComputedResults {
     treesEquivalent: Math.round(co2Annual / CO2_FACTORS.treeCO2PerYear),
     carKmEquivalent: Math.round(co2Annual / CO2_FACTORS.carEmissionPerKm),
     familySize: form.familySize,
-    monthlySavingsPotential: Math.round(monthlyWaste * 0.6),
+    monthlySavingsPotential: Math.round(monthlyWaste * RECOVERABLE_SAVINGS_RATE),
   }
 }

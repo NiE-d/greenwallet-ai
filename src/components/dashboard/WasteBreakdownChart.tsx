@@ -11,7 +11,7 @@ import {
 import type { BreakdownItem } from '@/types/results'
 import { formatINR } from '@/utils/formatters'
 
-interface Props {
+interface WasteBreakdownChartProps {
   breakdown: BreakdownItem[]
 }
 
@@ -30,7 +30,7 @@ function CustomTooltip({ active, payload }: { active?: boolean; payload?: Array<
   )
 }
 
-export function WasteBreakdownChart({ breakdown }: Props) {
+export function WasteBreakdownChart({ breakdown }: WasteBreakdownChartProps) {
   return (
     <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">
       <p className="text-sm font-semibold text-gray-700 mb-4">Monthly waste breakdown</p>

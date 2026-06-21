@@ -1,5 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
+/**
+ * Animates a number from 0 up to `target` using an ease-out-cubic curve,
+ * driven by `requestAnimationFrame` for smooth 60fps updates. Used for the
+ * dashboard's animated metric counters (waste score, rupee amounts, etc.).
+ *
+ * @param target - The final value to animate toward.
+ * @param duration - Animation duration in milliseconds. Defaults to 1200ms.
+ * @param enabled - When false, skips the animation and jumps straight to
+ *                  `target` (e.g. to respect `prefers-reduced-motion`).
+ * @returns The current animated value, updated on every frame.
+ */
 export function useAnimatedCounter(
   target: number,
   duration = 1200,

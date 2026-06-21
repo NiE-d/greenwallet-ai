@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { formatKg, formatNumber } from '@/utils/formatters'
 
-interface Props {
+interface PlanetImpactProps {
   co2Annual: number
   treesEquivalent: number
   carKmEquivalent: number
@@ -13,7 +13,7 @@ const stats = (co2: number, trees: number, km: number) => [
   { emoji: '🚗', value: `${formatNumber(km)} km`, label: 'Car journey equivalent', desc: 'The road-trip distance this CO₂ represents' },
 ]
 
-export function PlanetImpact({ co2Annual, treesEquivalent, carKmEquivalent }: Props) {
+export function PlanetImpact({ co2Annual, treesEquivalent, carKmEquivalent }: PlanetImpactProps) {
   const items = stats(co2Annual, treesEquivalent, carKmEquivalent)
 
   return (

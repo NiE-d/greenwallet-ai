@@ -44,4 +44,25 @@ describe('safeLocalStorageGet() / safeLocalStorageSet()', () => {
     localStorage.setItem('corrupted_key', '{not valid json')
     expect(safeLocalStorageGet('corrupted_key')).toBeNull()
   })
+
+  it('returns false instead of throwing when the value cannot be JSON-serialized', () => {
+    // A circular reference makes JSON.stringify throw a real TypeError —
+    // this exercises the actual catch block, not a mocked one.
+    const circular: Record<string, unknown> = { a: 1 }
+    circular.self = circular
+
+    const ok = safeLocalStorageSet('circular_key', circular)
+
+    expect(ok).toBe(false)
+    // And nothing should have been written for this key as a result.
+    expect(safeLocalStorageGet('circular_key')).toBeNull()
+  })
+
+  it('round-trips an empty object and an empty array correctly', () => {
+    expect(safeLocalStorageSet('empty_obj', {})).toBe(true)
+    expect(safeLocalStorageGet('empty_obj')).toEqual({})
+
+    expect(safeLocalStorageSet('empty_arr', [])).toBe(true)
+    expect(safeLocalStorageGet('empty_arr')).toEqual([])
+  })
 })
